@@ -22,14 +22,14 @@ class HeaderComponent extends Component {
 
         return(
             <header>
-                <Navbar color="faded" 
-                    expand 
-                    dark 
+                <Navbar color="faded"
+                    expand
+                    dark
                     className="navbar-custom bg-primary navbar-expand-sm navbar-dark">
-                    
+                
                     <NavbarToggler onClick={this.toggleNavbar} />
                     <NavbarBrand href="/">Finch</NavbarBrand>
-                    
+
                     <Collapse isOpen={isOpen} navbar>
                         <Nav navbar>
                             <NavItem>
