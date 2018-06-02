@@ -1,10 +1,19 @@
 import express from 'express';
 import mongooseRestFulCrud from 'mongoose-restful-crud';
-import Category from './../../schemas/Category';
+import Bill from './../../schemas/Bill';
 
 const router = express.Router();
 
-const crud = mongooseRestFulCrud(Category, {});
+const options = {
+  select: {},
+  filter: {},
+  sort: {},
+  page: 1,
+  perPage: 20,
+  population: null
+}
+
+const crud = mongooseRestFulCrud(Bill, options);
 
 router.get('/', crud.get);
 router.get('/:id', crud.getOne);
