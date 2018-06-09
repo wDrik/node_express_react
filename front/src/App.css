@@ -5,3 +5,7 @@
 .m-1tbem {
   margin: 1em 0;
 }
+
+.m-1lrem {
+  margin: 0 1em 0 0;
+}
