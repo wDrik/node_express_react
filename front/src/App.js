@@ -7,6 +7,8 @@ import HeaderComponent from './components/HeaderComponent';
 import MainComponent from './components/MainComponent';
 import ListCategoryComponent from './components/category/ListCategoryComponent';
 import CreateCategoryComponent from './components/category/CreateCategoryComponent';
+import ListBillComponent from './components/bill/ListBillComponent';
+import CreateBillComponent from './components/bill/CreateBillComponent';
 
 class App extends Component {
   render() {
@@ -15,9 +17,11 @@ class App extends Component {
         <HeaderComponent />
         <Router>
           <div>
-            <Route exact path="/" component={MainComponent}></Route>
-            <Route exact path="/category" component={ListCategoryComponent}></Route>
-            <Route path="/category/new" component={CreateCategoryComponent}></Route>
+            <Route exact path="/" component={MainComponent} />
+            <Route exact path="/category" component={ListCategoryComponent} />
+            <Route path="/category/new" component={CreateCategoryComponent} />
+            <Route exact path="/bill" component={ListBillComponent} />
+            <Route path="/bill/new" component={CreateBillComponent} />
           </div>
         </Router>
       </div>
