@@ -1,13 +1,73 @@
 import React, { Component } from 'react';
 import { Container, Row, Col, Button, Form, FormGroup, Input, Label } from 'reactstrap'
-import CurrencyInput from 'react-currency-input';
+import NumberFormat from 'react-number-format';
+import { create } from './BillAPI';
+import { findAll as findAllCategories } from './../category/CategoryAPI';
 
 class CreateBillComponent extends Component {
   constructor(props) {
     super(props)
+
+    this.state = {
+      name: '',
+      value: 0.00,
+      type: '',
+      category: '',
+      categories: []
+    }
+
+    this.handleChangeName     = this.handleChangeName.bind(this); 
+    this.handleChangeValue    = this.handleChangeValue.bind(this); 
+    this.handleChangeType     = this.handleChangeType.bind(this); 
+    this.handleChangeCategory = this.handleChangeCategory.bind(this); 
+    this.handleSubmit         = this.handleSubmit.bind(this);
+  }
+
+  componentDidMount() {
+    return findAllCategories().then(data => this.setState({ categories: data.results }))
+  }
+
+  handleChangeName(e) {
+    return this.setState({
+      name: e.target.value
+    })
+  }
+
+  handleChangeType(e) {
+    return this.setState({
+      type: e.target.value
+    })
+  }
+
+  handleChangeCategory(e) {
+    return this.setState({
+      category: e.target.value
+    })
+  }
+
+  handleChangeValue(e, values) {
+    // let { floatValue } = values;
+
+    // return this.setState({
+    //   value: floatValue
+    // })
+
+    return this.setState({
+      value: e.target.value
+    })
+  }
+
+  handleSubmit() {
+    let { name, value, type, category } = this.state;
+
+    create(name, value, type, category).then(() => {
+      this.props.history.push('/bill');
+    })
   }
 
   render() {
+    let { categories, value } = this.state;
+
     return (
       <Container>
         <Row>
@@ -17,19 +77,22 @@ class CreateBillComponent extends Component {
                 <Label>Name:</Label>
                 <Input type="name" 
                   name="name" 
-                  placeholder="Enter Bill Name" />
+                  placeholder="Enter Bill Name"
+                  onChange={ this.handleChangeName } />
               </FormGroup>
               <FormGroup>
                 <Label>Value:</Label>
-                <CurrencyInput name="value" 
+                <Input type="number" 
+                  value={ value } 
                   className="form-control" 
-                  prefix="R$ " 
-                  precision="2" />
+                  onChange={ this.handleChangeValue } />
               </FormGroup>
               <FormGroup>
                 <Label>Type:</Label>
                 <Input type="select"
-                  name="select">
+                  name="type"
+                  onChange={ this.handleChangeType }>
+                  <option value="-1" defaultValue="-1">Select Type</option>
                   <option value="IN">Input</option>
                   <option value="OU">Output</option>
                 </Input>
@@ -37,13 +100,16 @@ class CreateBillComponent extends Component {
               <FormGroup>
                 <Label>Category:</Label>
                 <Input type="select"
-                  name="select">
-                  <option value="IN">Input</option>
-                  <option value="OU">Output</option>
+                  name="category"
+                  onChange={ this.handleChangeCategory }>
+                  <option value="-1" defaultValue="-1">Select Category</option>
+                  { categories.map((category, index) => (
+                    <option value={ category._id } key={ index }>{ category.name }</option>
+                  )) }
                 </Input>
               </FormGroup>
               <FormGroup>
-                <Button color="primary">Create</Button>
+                <Button color="primary" onClick={ this.handleSubmit }>Create</Button>
               </FormGroup>
             </Form>
           </Col>
